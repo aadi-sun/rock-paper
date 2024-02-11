@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Play Rock-Paper-Scissors</title>
+    <link rel="stylesheet" href="rock.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mouse+Memoirs&family=Pacifico&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div style="color: white;font-family: 'Pacifico';text-align: center;font-size:70px;font-weight: 500;padding-top: 50px;">Hello Teddy, play Rock-Paper-Scissors !!!</div>
+    <div style="color: white;font-family: 'Pacifico';text-align:center;font-size:70px;font-weight: 500;padding-top: 50px;">Scroll down!</div>
+    <div class="heading">
+        <div>Rock</div>
+        <div>Paper</div>
+        <div>Scissors</div>
+    </div>
+    <div class="images">
+        <div>
+            <button onclick="outcome('rock');" class="b"><img src="rock-emoji.png" alt="rock" class="ëach_img"></button>
+        </div>
+        <div>
+            <button onclick="outcome('paper');" class=" b"><img src="paper-emoji.png" alt="paper"
+                    class="ëach_img"></button>
+        </div>
+        <div>
+            <button onclick="outcome('scissors');" class="b"><img src="scissors-emoji.png" alt="scissors"
+                    class="ëach_img"></button>
+        </div>
+    </div>
+    <div class="declare"></div>
+    <div class="disp_declare"></div>
+    <div class="print_res">
+        <div class="js-display_score1 display_score1"></div>
+        <div class="js-display_score2 display_score2"></div>
+        <div class="js-display_score3 display_score3"></div>
+    </div>
+    <div class="score_div" onclick="score.wins=0;score.losses=0;score.tie=0;localStorage.removeItem('score');updatescore();"><button
+            class="score_button">Reset Score</button></div>
+
+    <script>
+        let compMove = '';
+        let score = JSON.parse(localStorage.getItem('score')) || {
+            wins: 0,
+            losses: 0,
+            tie: 0
+        };
+        let res = 0;
+        let the_outcome = '';
+        updatescore();
+
+        function compPlay() {
+            res = Math.random();
+            if (res >= 0 && res < 1 / 3) {
+                compMove = 'rock';
+            }
+            else if (res >= 1 / 3 && res < 2 / 3) {
+                compMove = 'paper';
+            }
+            else {
+                compMove = 'scissors';
+            }
+            return compMove;
+        }
+        function outcome(move) {
+            compMove = compPlay();
+            if (compMove === 'rock') {
+                if (move === 'rock') {
+                    the_outcome = 'Tie';
+                }
+                else if (move === 'paper') {
+                    the_outcome = 'You win!!!';
+                }
+                else {
+                    the_outcome = 'You lose  :(';
+                }
+            }
+            else if (compMove === 'paper') {
+                if (move === 'rock') {
+                    the_outcome = 'You lose  :(';
+                }
+                else if (move === 'paper') {
+                    the_outcome = 'Tie';
+                }
+                else {
+                    the_outcome = 'You win!!!';
+                }
+            }
+            else {
+                if (move === 'rock') {
+                    the_outcome = 'You win!!!';
+                }
+                else if (move === 'paper') {
+                    the_outcome = 'You lose  :(';
+                }
+                else {
+                    the_outcome = 'Tie';
+                }
+            }
+            if (the_outcome === 'You win!!!') {
+                score.wins++;
+                console.log(score.wins)
+            }
+            else if (the_outcome === 'You lose  :(') {
+                score.losses++;
+                console.log(score.losses)
+            }
+            else {
+                score.tie++;
+                console.log(score.tie)
+            }
+            localStorage.setItem('score',JSON.stringify(score));
+            document.querySelector('.declare').innerHTML = `${the_outcome}`;
+            document.querySelector('.disp_declare').innerHTML = `<span style="transform: translateY(50px);">You: </span><img src="${move}-emoji.png" alt="${move}" style="height:100px;transform: translateY(50px);"> <span style="font-family: 'sans-serif';padding-right:40px;">WHILE</span> <span style="transform: translateY(50px);">Computer: </span> <img src="${compMove}-emoji.png" alt="${compMove}" style="height:100px;transform: translateY(50px);">`;
+            updatescore();
+        }
+        function updatescore() {
+            document.querySelector('.js-display_score1').innerHTML = `Wins: ${score.wins}`;
+            document.querySelector('.js-display_score2').innerHTML = `Losses: ${score.losses}`;
+            document.querySelector('.js-display_score3').innerHTML = `Ties: ${score.tie}`;
+        }
+    </script>
+</body>
+
+</html>
